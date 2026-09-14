@@ -26,6 +26,7 @@
     --glass-shadow: 0 20px 50px -20px rgba(0,0,0,0.55);
     --radius:18px;
     --maxw:1120px;
+    --bg-base:#050a14;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -37,15 +38,66 @@
     font-family:'Inter',sans-serif;
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
-    background:
-      linear-gradient(180deg, rgba(4,8,15,0.66) 0%, rgba(4,8,15,0.72) 40%, rgba(4,8,15,0.86) 100%),
-      radial-gradient(1200px 700px at 15% 0%, rgba(34,211,238,0.16), transparent 60%),
-      radial-gradient(1000px 700px at 100% 10%, rgba(139,124,246,0.14), transparent 55%),
-      url('images/landing-background.jpg') center top / cover no-repeat fixed,
-      #05090F;
+    position:relative;
+    overflow-x:hidden;
+    background:var(--bg-base);
   }
-  @media (max-width:860px){
-    body{ background-attachment: scroll; }
+
+  /* ---------- aurora / bokeh background ---------- */
+  .bg-aurora{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    width:100%;
+    height:100%;
+    background:var(--bg-base);
+  }
+  .bg-aurora svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .bg-aurora .aurora-drift{
+    transform-origin:50% 50%;
+    animation:driftAurora 38s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  .bg-aurora .bokeh-drift{
+    transform-origin:50% 50%;
+    animation:driftBokeh 26s ease-in-out infinite alternate;
+    will-change:transform;
+  }
+  @keyframes driftAurora{
+    0%{ transform:translate(0,0) scale(1) rotate(0deg); }
+    50%{ transform:translate(-1.5%,1.2%) scale(1.06) rotate(1.2deg); }
+    100%{ transform:translate(1.5%,-1%) scale(1) rotate(-1deg); }
+  }
+  @keyframes driftBokeh{
+    0%{ transform:translate(0,0) scale(1); opacity:1; }
+    50%{ transform:translate(0.8%,-1.4%) scale(1.03); opacity:0.9; }
+    100%{ transform:translate(-0.8%,1%) scale(1); opacity:1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .bg-aurora .aurora-drift, .bg-aurora .bokeh-drift{ animation:none; }
+  }
+  .bg-grain{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    opacity:0.035;
+    mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events:none;
+  }
+  .bg-overlay{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    background:
+      radial-gradient(130% 95% at 50% 0%, transparent 30%, rgba(3,6,12,0.4) 100%),
+      radial-gradient(90% 70% at 50% 100%, rgba(3,6,12,0.55) 0%, transparent 60%),
+      linear-gradient(180deg, rgba(3,6,12,0.14) 0%, rgba(3,6,12,0.32) 55%, rgba(3,6,12,0.68) 100%);
+    pointer-events:none;
   }
 
   h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;}
@@ -229,6 +281,83 @@
 </head>
 <body>
 
+<div class="bg-aurora" aria-hidden="true">
+  <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="swirlA" x1="5%" y1="95%" x2="95%" y2="5%">
+        <stop offset="0%" stop-color="#0a1220"/>
+        <stop offset="28%" stop-color="#0f7d8c"/>
+        <stop offset="46%" stop-color="#22D3EE"/>
+        <stop offset="64%" stop-color="#4f7ee0"/>
+        <stop offset="82%" stop-color="#8B7CF6"/>
+        <stop offset="100%" stop-color="#6428b8"/>
+      </linearGradient>
+      <radialGradient id="swirlB" cx="72%" cy="38%" r="55%">
+        <stop offset="0%" stop-color="#9b5ce0" stop-opacity="0.85"/>
+        <stop offset="55%" stop-color="#6a3fb8" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#6a3fb8" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="dotTeal" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#bdf4ff" stop-opacity="0.95"/>
+        <stop offset="60%" stop-color="#22D3EE" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#22D3EE" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="dotPurple" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#e4d6ff" stop-opacity="0.9"/>
+        <stop offset="60%" stop-color="#8B7CF6" stop-opacity="0.5"/>
+        <stop offset="100%" stop-color="#8B7CF6" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="dotWhite" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+        <stop offset="55%" stop-color="#dff6ff" stop-opacity="0.4"/>
+        <stop offset="100%" stop-color="#dff6ff" stop-opacity="0"/>
+      </radialGradient>
+      <filter id="blurSoft" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="45"/>
+      </filter>
+      <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="14"/>
+      </filter>
+      <filter id="blurTight" x="-100%" y="-100%" width="300%" height="300%">
+        <feGaussianBlur stdDeviation="4"/>
+      </filter>
+    </defs>
+
+    <rect width="1600" height="1000" fill="#05080f"/>
+
+    <g class="aurora-drift" filter="url(#blurSoft)">
+      <path d="M-150,760 C220,920 380,560 760,600 C1140,640 1220,300 1620,340 C1780,360 1820,520 1900,600 L1900,1150 L-150,1150 Z" fill="url(#swirlA)" opacity="0.9"/>
+      <ellipse cx="1150" cy="330" rx="480" ry="330" fill="url(#swirlB)"/>
+    </g>
+
+    <g class="bokeh-drift">
+      <circle cx="230" cy="470" r="58" fill="url(#dotTeal)" filter="url(#blurMed)"/>
+      <circle cx="140" cy="620" r="34" fill="url(#dotWhite)" filter="url(#blurTight)"/>
+      <circle cx="300" cy="780" r="26" fill="url(#dotTeal)" filter="url(#blurTight)"/>
+      <circle cx="420" cy="700" r="20" fill="url(#dotWhite)" filter="url(#blurTight)"/>
+      <circle cx="520" cy="330" r="30" fill="url(#dotTeal)" filter="url(#blurTight)"/>
+      <circle cx="180" cy="880" r="70" fill="url(#dotPurple)" filter="url(#blurMed)"/>
+      <circle cx="60" cy="980" r="44" fill="url(#dotTeal)" filter="url(#blurMed)"/>
+
+      <circle cx="1010" cy="470" r="26" fill="url(#dotPurple)" filter="url(#blurTight)"/>
+      <circle cx="1080" cy="410" r="42" fill="url(#dotPurple)" filter="url(#blurMed)"/>
+      <circle cx="1220" cy="380" r="22" fill="url(#dotWhite)" filter="url(#blurTight)"/>
+      <circle cx="1320" cy="250" r="30" fill="url(#dotTeal)" filter="url(#blurTight)"/>
+      <circle cx="1420" cy="300" r="50" fill="url(#dotWhite)" filter="url(#blurMed)"/>
+      <circle cx="1510" cy="220" r="20" fill="url(#dotTeal)" filter="url(#blurTight)"/>
+      <circle cx="1560" cy="400" r="32" fill="url(#dotPurple)" filter="url(#blurTight)"/>
+      <circle cx="1180" cy="620" r="24" fill="url(#dotPurple)" filter="url(#blurTight)"/>
+      <circle cx="1300" cy="700" r="18" fill="url(#dotWhite)" filter="url(#blurTight)"/>
+
+      <circle cx="80" cy="140" r="20" fill="url(#dotWhite)" filter="url(#blurTight)" opacity="0.6"/>
+      <circle cx="1550" cy="820" r="36" fill="url(#dotTeal)" filter="url(#blurMed)" opacity="0.5"/>
+      <circle cx="1480" cy="950" r="24" fill="url(#dotPurple)" filter="url(#blurTight)" opacity="0.6"/>
+    </g>
+  </svg>
+</div>
+<div class="bg-grain" aria-hidden="true"></div>
+<div class="bg-overlay" aria-hidden="true"></div>
+
 <header>
   <div class="wrap nav">
     <div class="brand">
@@ -241,12 +370,8 @@
 
 <!-- ============ HERO ============ -->
 <!--
-  IMAGE — full-page background (applies to the ENTIRE page, not just this section)
-  Filename: images/landing-background.jpg
-  What to show: a warm, real-life lifestyle photo (people at home, on a couch, relaxed) —
-  the same kind of image you're using behind your app's dashboard. It sits behind every
-  section on the page, blurred through the glass panels.
-  Suggested size: 2400x1600px or larger, JPG, landscape.
+  Note: the full-page background is a pure CSS animated gradient (see .bg-field above),
+  not an uploaded image — nothing to add to the repo for it.
 -->
 <!--
   IMAGE 1
