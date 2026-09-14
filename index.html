@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DebtFree — Own Your Debt Payoff Plan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -22,7 +23,7 @@
     --glass-bg-soft: rgba(18,26,38,0.28);
     --glass-border: rgba(255,255,255,0.16);
     --glass-border-strong: rgba(255,255,255,0.28);
-    --glass-blur: blur(26px) saturate(180%);
+    --glass-blur: blur(16px) saturate(170%);
     --glass-shadow: 0 20px 50px -20px rgba(0,0,0,0.55);
     --radius:18px;
     --maxw:1120px;
@@ -68,18 +69,18 @@
     will-change:transform;
   }
   @keyframes driftAurora{
-    0%{ transform:translate(0,0) scale(1) rotate(0deg); }
-    25%{ transform:translate(-2.2%,1.6%) scale(1.05) rotate(1.4deg); }
-    50%{ transform:translate(0.6%,-2%) scale(1.08) rotate(0deg); }
-    75%{ transform:translate(2.2%,1%) scale(1.04) rotate(-1.4deg); }
-    100%{ transform:translate(0,0) scale(1) rotate(0deg); }
+    0%{ transform:translate3d(0,0,0) scale(1); }
+    25%{ transform:translate3d(-2.2%,1.6%,0) scale(1.05); }
+    50%{ transform:translate3d(0.6%,-2%,0) scale(1.08); }
+    75%{ transform:translate3d(2.2%,1%,0) scale(1.04); }
+    100%{ transform:translate3d(0,0,0) scale(1); }
   }
   @keyframes driftBokeh{
-    0%{ transform:translate(0,0) scale(1) rotate(0deg); }
-    25%{ transform:translate(1.4%,-1.8%) scale(1.04) rotate(0.6deg); }
-    50%{ transform:translate(-1%,-2.4%) scale(1) rotate(0deg); }
-    75%{ transform:translate(-1.6%,1.2%) scale(1.05) rotate(-0.6deg); }
-    100%{ transform:translate(0,0) scale(1) rotate(0deg); }
+    0%{ transform:translate3d(0,0,0) scale(1); }
+    25%{ transform:translate3d(1.4%,-1.8%,0) scale(1.04); }
+    50%{ transform:translate3d(-1%,-2.4%,0) scale(1); }
+    75%{ transform:translate3d(-1.6%,1.2%,0) scale(1.05); }
+    100%{ transform:translate3d(0,0,0) scale(1); }
   }
   @media (prefers-reduced-motion: reduce){
     .bg-aurora .aurora-drift, .bg-aurora .bokeh-drift{ animation:none; }
@@ -120,8 +121,8 @@
   }
   .glass-soft{
     background:var(--glass-bg-soft);
-    -webkit-backdrop-filter:blur(18px) saturate(160%);
-    backdrop-filter:blur(18px) saturate(160%);
+    -webkit-backdrop-filter:blur(12px) saturate(150%);
+    backdrop-filter:blur(12px) saturate(150%);
     border:1px solid var(--glass-border);
     border-radius:14px;
   }
@@ -129,10 +130,12 @@
   /* ---------- header ---------- */
   header{
     position:sticky;top:0;z-index:50;
-    background:rgba(8,13,22,0.38);
-    -webkit-backdrop-filter:blur(22px) saturate(180%);
-    backdrop-filter:blur(22px) saturate(180%);
+    background:rgba(8,13,22,0.62);
+    -webkit-backdrop-filter:blur(14px) saturate(160%);
+    backdrop-filter:blur(14px) saturate(160%);
     border-bottom:1px solid var(--glass-border);
+    -webkit-transform:translateZ(0);
+    transform:translateZ(0);
   }
   .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 0;}
   .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:19px;font-family:'Space Grotesk',sans-serif;letter-spacing:-0.01em;}
@@ -236,8 +239,8 @@
   .loss-card{
     border:1px solid rgba(240,80,110,0.4);
     background:rgba(240,80,110,0.10);
-    -webkit-backdrop-filter:blur(20px);
-    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
     border-radius:14px;padding:22px 24px;margin-top:10px;
   }
   .loss-card .amount{font-family:'Space Grotesk',sans-serif;color:var(--red);font-size:24px;font-weight:700;}
@@ -281,9 +284,9 @@
 
   footer{
     padding:32px 0;color:var(--muted);font-size:13.5px;text-align:center;
-    background:rgba(8,13,22,0.4);
-    -webkit-backdrop-filter:blur(20px);
-    backdrop-filter:blur(20px);
+    background:rgba(8,13,22,0.55);
+    -webkit-backdrop-filter:blur(12px);
+    backdrop-filter:blur(12px);
     border-top:1px solid var(--glass-border);
   }
 
@@ -339,13 +342,13 @@
         <stop offset="100%" stop-color="#dff6ff" stop-opacity="0"/>
       </radialGradient>
       <filter id="blurSoft" x="-60%" y="-60%" width="220%" height="220%">
-        <feGaussianBlur stdDeviation="45"/>
+        <feGaussianBlur stdDeviation="32"/>
       </filter>
       <filter id="blurMed" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="14"/>
+        <feGaussianBlur stdDeviation="10"/>
       </filter>
       <filter id="blurTight" x="-100%" y="-100%" width="300%" height="300%">
-        <feGaussianBlur stdDeviation="4"/>
+        <feGaussianBlur stdDeviation="3"/>
       </filter>
     </defs>
 
@@ -419,7 +422,7 @@
       </div>
     </div>
     <div class="hero-art glass reveal" style="transition-delay:.1s;">
-      <img src="images/hero-dashboard.png" alt="DebtFree dashboard showing total debt, payoff strategy, and trend chart">
+      <img src="images/hero-dashboard.png" alt="DebtFree dashboard showing total debt, payoff strategy, and trend chart" decoding="async" fetchpriority="high">
     </div>
   </div>
 </section>
@@ -462,7 +465,7 @@
       </ul>
     </div>
     <div class="feature-media glass reveal" style="transition-delay:.1s;">
-      <img src="images/feature-strategy-planner.png" alt="DebtFree strategy planner with Snowball and Avalanche toggle">
+      <img loading="lazy" decoding="async" src="images/feature-strategy-planner.png" alt="DebtFree strategy planner with Snowball and Avalanche toggle">
     </div>
   </div>
 </section>
@@ -489,7 +492,7 @@
       </ul>
     </div>
     <div class="feature-media glass reveal" style="transition-delay:.1s;">
-      <img src="images/feature-due-alerts.png" alt="DebtFree notification center showing upcoming and overdue payment alerts">
+      <img loading="lazy" decoding="async" src="images/feature-due-alerts.png" alt="DebtFree notification center showing upcoming and overdue payment alerts">
     </div>
   </div>
 </section>
@@ -516,7 +519,7 @@
       </ul>
     </div>
     <div class="feature-media glass reveal" style="transition-delay:.1s;">
-      <img src="images/feature-export-report.png" alt="DebtFree exported PDF and Excel debt report">
+      <img loading="lazy" decoding="async" src="images/feature-export-report.png" alt="DebtFree exported PDF and Excel debt report">
     </div>
   </div>
 </section>
@@ -541,7 +544,7 @@
       </div>
     </div>
     <div class="loss-media glass reveal" style="transition-delay:.1s;">
-      <img src="images/feature-debt-trend-chart.png" alt="DebtFree debt trend chart showing total balance decreasing over time">
+      <img loading="lazy" decoding="async" src="images/feature-debt-trend-chart.png" alt="DebtFree debt trend chart showing total balance decreasing over time">
     </div>
   </div>
 </section>
