@@ -192,56 +192,74 @@
     backdrop-filter:blur(10px);
   }
 
-  /* ---------- scroll reveal ---------- */
-  .reveal{
-    opacity:0;
-    transform:translateY(38px);
-    transition:opacity .85s cubic-bezier(0.16,1,0.3,1), transform .85s cubic-bezier(0.16,1,0.3,1);
-    will-change:opacity, transform;
+  /* ---------- language chooser popup ---------- */
+  .lang-overlay{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(5,10,20,0.72);
+    -webkit-backdrop-filter:blur(6px);
+    backdrop-filter:blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
   }
-  .reveal.reveal-up{
-    transform:translateY(-38px);
+  .lang-modal{
+    width:100%;
+    max-width:420px;
+    background:var(--glass-bg);
+    border:1px solid var(--glass-border-strong);
+    border-radius:var(--radius);
+    box-shadow:var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,0.08);
+    -webkit-backdrop-filter:var(--glass-blur);
+    backdrop-filter:var(--glass-blur);
+    padding:36px 28px;
+    text-align:center;
   }
-  .reveal.visible{
-    opacity:1;
-    transform:translateY(0);
+  .lang-modal p{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:19px;
+    font-weight:700;
+    color:#fff;
+    margin:0 0 24px;
+    line-height:1.4;
   }
-  @media (prefers-reduced-motion: reduce){
-    .reveal, .reveal.reveal-up, .reveal.visible{
-      opacity:1 !important;
-      transform:none !important;
-      transition:none !important;
-    }
+  .lang-buttons{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .lang-btn{
+    display:block;
+    width:100%;
+    padding:18px 20px;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:18px;
+    font-weight:700;
+    color:#fff;
+    background:rgba(34,211,238,0.14);
+    border:1.5px solid var(--teal);
+    border-radius:14px;
+    cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .lang-btn:hover{
+    background:var(--teal);
+    color:#04121a;
+    transform:translateY(-2px);
   }
 
-  /* ---------- scroll reveal for glass panels (Safari-safe) ---------- */
-  /* .reveal-mask is a plain, never-animated wrapper. It exists purely
-     so the curtain has something to sit inside of; it never gets an
-     opacity/transform/filter of its own, so it never becomes a
-     "backdrop root" and never breaks the .glass child's blur. */
+  /* ---------- scroll reveal: deshabilitado, elementos siempre visibles ---------- */
+  .reveal{
+    opacity:1;
+    transform:none;
+  }
   .reveal-mask{
     position:relative;
   }
   .reveal-curtain{
-    position:absolute;
-    inset:0;
-    z-index:5;
-    border-radius:var(--radius);
-    background:var(--bg-base);
-    opacity:1;
-    pointer-events:none;
-    transition:opacity .8s cubic-bezier(0.16,1,0.3,1);
-    transition-delay:var(--delay,0s);
-    will-change:opacity;
-  }
-  .reveal-mask.visible .reveal-curtain{
-    opacity:0;
-  }
-  @media (prefers-reduced-motion: reduce){
-    .reveal-curtain{
-      transition:none !important;
-      opacity:0 !important;
-    }
+    display:none;
   }
 
   /* ---------- generic section spacing ---------- */
@@ -379,6 +397,16 @@
 </head>
 <body>
 
+<div class="lang-overlay" id="langOverlay">
+  <div class="lang-modal">
+    <p>Choose your language<br>Elige tu idioma</p>
+    <div class="lang-buttons">
+      <button type="button" class="lang-btn" id="langEn">English</button>
+      <button type="button" class="lang-btn" id="langEs">Español</button>
+    </div>
+  </div>
+</div>
+
 <div class="bg-aurora" aria-hidden="true">
   <svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -462,7 +490,7 @@
       <img src="images/logo.png" alt="DebtFree logo" class="brand-mark">
       DebtFree
     </div>
-    <a href="#pricing" class="nav-cta">Get it — $47</a>
+    <a href="#pricing" class="nav-cta" data-i18n="nav_cta">Get it — $47</a>
   </div>
 </header>
 
@@ -482,12 +510,12 @@
 <section class="hero">
   <div class="wrap hero-grid">
     <div class="reveal">
-      <p class="eyebrow">DEBT PAYOFF, ON YOUR TERMS</p>
-      <h1>Stop guessing which debt to pay first.</h1>
-      <p class="lead">DebtFree turns your credit cards, loans, and balances into one clear payoff plan — so every dollar you send goes where it actually saves you money.</p>
+      <p class="eyebrow" data-i18n="hero_eyebrow">DEBT PAYOFF, ON YOUR TERMS</p>
+      <h1 data-i18n="hero_h1">Stop guessing which debt to pay first.</h1>
+      <p class="lead" data-i18n="hero_lead">DebtFree turns your credit cards, loans, and balances into one clear payoff plan — so every dollar you send goes where it actually saves you money.</p>
       <div class="cta-row">
-        <a href="#pricing" class="btn-primary">Get DebtFree — $47</a>
-        <span class="price-note">One-time payment. <strong>Yours forever.</strong></span>
+        <a href="#pricing" class="btn-primary" data-i18n="hero_cta">Get DebtFree — $47</a>
+        <span class="price-note" data-i18n-html="hero_price_note">One-time payment. <strong>Yours forever.</strong></span>
       </div>
     </div>
     <div class="reveal-mask" style="--delay:.1s;">
@@ -503,16 +531,16 @@
 <div class="wrap stat-strip-wrap">
   <div class="stat-strip glass">
     <div class="stat reveal">
-      <div class="num">1 file</div>
-      <div class="lbl">No login. No subscription. No bank connection.</div>
+      <div class="num" data-i18n="stat1_num">1 file</div>
+      <div class="lbl" data-i18n="stat1_lbl">No login. No subscription. No bank connection.</div>
     </div>
     <div class="stat reveal" style="transition-delay:.08s;">
-      <div class="num">2 strategies</div>
-      <div class="lbl">Snowball or Avalanche — calculated for you.</div>
+      <div class="num" data-i18n="stat2_num">2 strategies</div>
+      <div class="lbl" data-i18n="stat2_lbl">Snowball or Avalanche — calculated for you.</div>
     </div>
     <div class="stat reveal" style="transition-delay:.16s;">
       <div class="num">$47</div>
-      <div class="lbl">Paid once. Used every month, forever.</div>
+      <div class="lbl" data-i18n="stat3_lbl">Paid once. Used every month, forever.</div>
     </div>
   </div>
 </div>
@@ -528,12 +556,12 @@
 <section>
   <div class="wrap feature-row">
     <div class="feature-copy reveal">
-      <h2>A plan that tells you exactly where your money goes.</h2>
-      <p>Pick Avalanche to crush your highest-interest debt first and pay less interest overall — or pick Snowball to knock out small balances fast and build momentum. DebtFree does the math and orders your debts for you.</p>
+      <h2 data-i18n="f1_h2">A plan that tells you exactly where your money goes.</h2>
+      <p data-i18n="f1_p">Pick Avalanche to crush your highest-interest debt first and pay less interest overall — or pick Snowball to knock out small balances fast and build momentum. DebtFree does the math and orders your debts for you.</p>
       <ul>
-        <li><span class="tick">✓</span>See which debt to pay off first, automatically</li>
-        <li><span class="tick">✓</span>Switch strategies anytime and compare the outcome</li>
-        <li><span class="tick">✓</span>Know how many months until each debt is gone</li>
+        <li><span class="tick">✓</span><span data-i18n="f1_li1">See which debt to pay off first, automatically</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f1_li2">Switch strategies anytime and compare the outcome</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f1_li3">Know how many months until each debt is gone</span></li>
       </ul>
     </div>
     <div class="reveal-mask" style="--delay:.1s;">
@@ -558,12 +586,12 @@
 <section>
   <div class="wrap feature-row reverse">
     <div class="feature-copy reveal">
-      <h2>Never pay a late fee on top of interest again.</h2>
-      <p>Every due date lives in one place, with alerts before the deadline — not after. A missed payment doesn't just cost a fee; it resets your progress. DebtFree keeps you ahead of every date.</p>
+      <h2 data-i18n="f2_h2">Never pay a late fee on top of interest again.</h2>
+      <p data-i18n="f2_p">Every due date lives in one place, with alerts before the deadline — not after. A missed payment doesn't just cost a fee; it resets your progress. DebtFree keeps you ahead of every date.</p>
       <ul>
-        <li><span class="tick">✓</span>Color-coded alerts: on track, coming up, overdue</li>
-        <li><span class="tick">✓</span>Filter by status so nothing slips through</li>
-        <li><span class="tick">✓</span>One glance tells you what needs attention this week</li>
+        <li><span class="tick">✓</span><span data-i18n="f2_li1">Color-coded alerts: on track, coming up, overdue</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f2_li2">Filter by status so nothing slips through</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f2_li3">One glance tells you what needs attention this week</span></li>
       </ul>
     </div>
     <div class="reveal-mask" style="--delay:.1s;">
@@ -588,12 +616,12 @@
 <section>
   <div class="wrap feature-row">
     <div class="feature-copy reveal">
-      <h2>Take your progress anywhere it needs to go.</h2>
-      <p>Generate a professional PDF report or an Excel breakdown in one click — to share with a partner, a financial coach, or just to keep an offline record of how far you've come.</p>
+      <h2 data-i18n="f3_h2">Take your progress anywhere it needs to go.</h2>
+      <p data-i18n="f3_p">Generate a professional PDF report or an Excel breakdown in one click — to share with a partner, a financial coach, or just to keep an offline record of how far you've come.</p>
       <ul>
-        <li><span class="tick">✓</span>One-click PDF summary of your full debt picture</li>
-        <li><span class="tick">✓</span>Excel export with a clean, ready-to-share layout</li>
-        <li><span class="tick">✓</span>Save or reopen your data anytime, on any computer</li>
+        <li><span class="tick">✓</span><span data-i18n="f3_li1">One-click PDF summary of your full debt picture</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f3_li2">Excel export with a clean, ready-to-share layout</span></li>
+        <li><span class="tick">✓</span><span data-i18n="f3_li3">Save or reopen your data anytime, on any computer</span></li>
       </ul>
     </div>
     <div class="reveal-mask" style="--delay:.1s;">
@@ -616,12 +644,12 @@
 <section>
   <div class="wrap loss-grid">
     <div class="loss-copy reveal">
-      <p class="eyebrow">WHAT WAITING IS COSTING YOU</p>
-      <h2>Every month without a plan, interest wins.</h2>
-      <p>A credit card at 24% APR doesn't pause while you figure things out. Paying the wrong debt first — or paying the minimum on all of them equally — quietly sends extra money to interest instead of your balance.</p>
+      <p class="eyebrow" data-i18n="loss_eyebrow">WHAT WAITING IS COSTING YOU</p>
+      <h2 data-i18n="loss_h2">Every month without a plan, interest wins.</h2>
+      <p data-i18n="loss_p">A credit card at 24% APR doesn't pause while you figure things out. Paying the wrong debt first — or paying the minimum on all of them equally — quietly sends extra money to interest instead of your balance.</p>
       <div class="loss-card">
-        <div class="amount">That's money you'll never get back.</div>
-        <div class="caption">The Avalanche method exists for exactly this reason: pay the highest interest rate first, and stop overpaying the bank for the privilege of being disorganized.</div>
+        <div class="amount" data-i18n="loss_amount">That's money you'll never get back.</div>
+        <div class="caption" data-i18n="loss_caption">The Avalanche method exists for exactly this reason: pay the highest interest rate first, and stop overpaying the bank for the privilege of being disorganized.</div>
       </div>
     </div>
     <div class="reveal-mask" style="--delay:.1s;">
@@ -636,30 +664,30 @@
 <!-- ============ OWNERSHIP ============ -->
 <section>
   <div class="wrap">
-    <p class="eyebrow reveal">WHY IT'S DIFFERENT</p>
-    <h2 class="reveal" style="font-size:30px;max-width:560px;margin:0 0 40px;text-shadow:0 1px 14px rgba(0,0,0,0.4);">Not another app renting you a login.</h2>
+    <p class="eyebrow reveal" data-i18n="own_eyebrow">WHY IT'S DIFFERENT</p>
+    <h2 class="reveal" style="font-size:30px;max-width:560px;margin:0 0 40px;text-shadow:0 1px 14px rgba(0,0,0,0.4);" data-i18n="own_h2">Not another app renting you a login.</h2>
     <div class="own-grid">
       <div class="reveal-mask">
         <div class="own-card glass">
           <div class="icon-wrap">🔒</div>
-          <h3>Your data stays yours</h3>
-          <p>No bank connection, no account, no third-party server holding your numbers. Everything lives in your own file, on your own computer.</p>
+          <h3 data-i18n="own1_h3">Your data stays yours</h3>
+          <p data-i18n="own1_p">No bank connection, no account, no third-party server holding your numbers. Everything lives in your own file, on your own computer.</p>
         </div>
         <div class="reveal-curtain"></div>
       </div>
       <div class="reveal-mask" style="--delay:.1s;">
         <div class="own-card glass">
           <div class="icon-wrap">💳</div>
-          <h3>No subscription, ever</h3>
-          <p>Pay once. Use it every month for as long as you're paying off debt — and after, as a record of how you did it.</p>
+          <h3 data-i18n="own2_h3">No subscription, ever</h3>
+          <p data-i18n="own2_p">Pay once. Use it every month for as long as you're paying off debt — and after, as a record of how you did it.</p>
         </div>
         <div class="reveal-curtain"></div>
       </div>
       <div class="reveal-mask" style="--delay:.2s;">
         <div class="own-card glass">
           <div class="icon-wrap">🎨</div>
-          <h3>Made to actually open</h3>
-          <p>Dark or light mode, your own accent color, your own background. A tool you'll want to check in on, not avoid.</p>
+          <h3 data-i18n="own3_h3">Made to actually open</h3>
+          <p data-i18n="own3_p">Dark or light mode, your own accent color, your own background. A tool you'll want to check in on, not avoid.</p>
         </div>
         <div class="reveal-curtain"></div>
       </div>
@@ -672,20 +700,20 @@
   <div class="wrap">
     <div class="reveal-mask">
       <div class="pricing glass">
-        <p class="eyebrow" style="justify-content:center;display:flex;">ONE PAYMENT. NO CATCH.</p>
-        <h2>Get your full debt payoff plan today.</h2>
-        <p class="sub">Everything you saw above — the strategy planner, due date alerts, exports, and trend tracking — in one file that's entirely yours.</p>
-        <p class="price-tag">$47<span>one time</span></p>
-        <p class="price-sub">No subscription. No recurring charge. No expiration.</p>
+        <p class="eyebrow" style="justify-content:center;display:flex;" data-i18n="price_eyebrow">ONE PAYMENT. NO CATCH.</p>
+        <h2 data-i18n="price_h2">Get your full debt payoff plan today.</h2>
+        <p class="sub" data-i18n="price_sub_p">Everything you saw above — the strategy planner, due date alerts, exports, and trend tracking — in one file that's entirely yours.</p>
+        <p class="price-tag">$47<span data-i18n="price_onetime">one time</span></p>
+        <p class="price-sub" data-i18n="price_sub2">No subscription. No recurring charge. No expiration.</p>
         <ul class="pricing-list">
-          <li><span class="tick">✓</span>Full DebtFree tool, unlocked completely</li>
-          <li><span class="tick">✓</span>Snowball and Avalanche payoff planning</li>
-          <li><span class="tick">✓</span>Due date alerts and notification center</li>
-          <li><span class="tick">✓</span>PDF and Excel export, unlimited</li>
-          <li><span class="tick">✓</span>Works forever — no login, no cloud, no expiry</li>
+          <li><span class="tick">✓</span><span data-i18n="price_li1">Full DebtFree tool, unlocked completely</span></li>
+          <li><span class="tick">✓</span><span data-i18n="price_li2">Snowball and Avalanche payoff planning</span></li>
+          <li><span class="tick">✓</span><span data-i18n="price_li3">Due date alerts and notification center</span></li>
+          <li><span class="tick">✓</span><span data-i18n="price_li4">PDF and Excel export, unlimited</span></li>
+          <li><span class="tick">✓</span><span data-i18n="price_li5">Works forever — no login, no cloud, no expiry</span></li>
         </ul>
         <div>
-          <a href="#" class="btn-primary">Get DebtFree Now — $47</a>
+          <a href="#" class="btn-primary" data-i18n="price_cta">Get DebtFree Now — $47</a>
         </div>
       </div>
       <div class="reveal-curtain"></div>
@@ -696,70 +724,156 @@
 <!-- ============ FAQ ============ -->
 <section class="tight">
   <div class="wrap" style="max-width:760px;">
-    <h2 class="reveal" style="font-size:26px;margin:0 0 28px;text-shadow:0 1px 14px rgba(0,0,0,0.4);">Questions before you get started</h2>
+    <h2 class="reveal" style="font-size:26px;margin:0 0 28px;text-shadow:0 1px 14px rgba(0,0,0,0.4);" data-i18n="faq_h2">Questions before you get started</h2>
 
     <div class="faq-item reveal">
-      <h3>Is this a subscription?</h3>
-      <p>No. You pay $47 once and the tool is yours permanently — no recurring billing of any kind.</p>
+      <h3 data-i18n="faq1_q">Is this a subscription?</h3>
+      <p data-i18n="faq1_a">No. You pay $47 once and the tool is yours permanently — no recurring billing of any kind.</p>
     </div>
     <div class="faq-item reveal" style="transition-delay:.05s;">
-      <h3>Do I need to connect my bank account?</h3>
-      <p>Never. You enter your own balances and rates manually, and everything stays in your own file on your own device.</p>
+      <h3 data-i18n="faq2_q">Do I need to connect my bank account?</h3>
+      <p data-i18n="faq2_a">Never. You enter your own balances and rates manually, and everything stays in your own file on your own device.</p>
     </div>
     <div class="faq-item reveal" style="transition-delay:.1s;">
-      <h3>Which debts can I track?</h3>
-      <p>Any of them — credit cards, personal loans, auto financing, store cards, or anything else with a balance and an interest rate.</p>
+      <h3 data-i18n="faq3_q">Which debts can I track?</h3>
+      <p data-i18n="faq3_a">Any of them — credit cards, personal loans, auto financing, store cards, or anything else with a balance and an interest rate.</p>
     </div>
     <div class="faq-item reveal" style="transition-delay:.15s;">
-      <h3>What if I use more than one computer?</h3>
-      <p>You can export your data and reopen it anywhere, so switching computers or browsers doesn't mean starting over.</p>
+      <h3 data-i18n="faq4_q">What if I use more than one computer?</h3>
+      <p data-i18n="faq4_a">You can export your data and reopen it anywhere, so switching computers or browsers doesn't mean starting over.</p>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap reveal">
+  <div class="wrap reveal" data-i18n="footer_text">
     DebtFree — a one-time tool for people who want a real plan, not another subscription.
   </div>
 </footer>
 
 <script>
 (function(){
-  var els = document.querySelectorAll('.reveal, .reveal-mask');
+  var TITLE = {
+    en: 'DebtFree — Own Your Debt Payoff Plan',
+    es: 'DebtFree — Tu Plan Propio para Saldar Deudas'
+  };
 
-  if (!('IntersectionObserver' in window)) {
-    els.forEach(function(el){ el.classList.add('visible'); });
-    return;
+  var STRINGS = {
+    nav_cta: { en: 'Get it — $47', es: 'Consíguelo — $47' },
+
+    hero_eyebrow: { en: 'DEBT PAYOFF, ON YOUR TERMS', es: 'SALDA TUS DEUDAS, A TU MANERA' },
+    hero_h1: { en: 'Stop guessing which debt to pay first.', es: 'Deja de adivinar qué deuda pagar primero.' },
+    hero_lead: { en: "DebtFree turns your credit cards, loans, and balances into one clear payoff plan — so every dollar you send goes where it actually saves you money.", es: 'DebtFree convierte tus tarjetas de crédito, préstamos y saldos en un plan de pago claro, para que cada peso que envíes vaya justo donde más te conviene.' },
+    hero_cta: { en: 'Get DebtFree — $47', es: 'Obtén DebtFree — $47' },
+    hero_price_note: { en: 'One-time payment. <strong>Yours forever.</strong>', es: 'Pago único. <strong>Tuyo para siempre.</strong>' },
+
+    stat1_num: { en: '1 file', es: '1 archivo' },
+    stat1_lbl: { en: 'No login. No subscription. No bank connection.', es: 'Sin inicio de sesión. Sin suscripción. Sin conexión bancaria.' },
+    stat2_num: { en: '2 strategies', es: '2 estrategias' },
+    stat2_lbl: { en: 'Snowball or Avalanche — calculated for you.', es: 'Bola de nieve o Avalancha — calculadas por ti.' },
+    stat3_lbl: { en: 'Paid once. Used every month, forever.', es: 'Se paga una vez. Se usa cada mes, para siempre.' },
+
+    f1_h2: { en: 'A plan that tells you exactly where your money goes.', es: 'Un plan que te muestra exactamente a dónde va tu dinero.' },
+    f1_p: { en: 'Pick Avalanche to crush your highest-interest debt first and pay less interest overall — or pick Snowball to knock out small balances fast and build momentum. DebtFree does the math and orders your debts for you.', es: 'Elige Avalancha para atacar primero la deuda con mayor interés y pagar menos en total, o elige Bola de nieve para liquidar rápido los saldos pequeños y ganar impulso. DebtFree hace los cálculos y ordena tus deudas por ti.' },
+    f1_li1: { en: 'See which debt to pay off first, automatically', es: 'Descubre qué deuda pagar primero, de forma automática' },
+    f1_li2: { en: 'Switch strategies anytime and compare the outcome', es: 'Cambia de estrategia cuando quieras y compara resultados' },
+    f1_li3: { en: 'Know how many months until each debt is gone', es: 'Sabe cuántos meses faltan para liquidar cada deuda' },
+
+    f2_h2: { en: 'Never pay a late fee on top of interest again.', es: 'No vuelvas a pagar un recargo por mora, además del interés.' },
+    f2_p: { en: "Every due date lives in one place, with alerts before the deadline — not after. A missed payment doesn't just cost a fee; it resets your progress. DebtFree keeps you ahead of every date.", es: 'Todas tus fechas de pago viven en un solo lugar, con alertas antes del vencimiento, no después. Un pago olvidado no solo cuesta un recargo: reinicia tu progreso. DebtFree te mantiene siempre un paso adelante.' },
+    f2_li1: { en: 'Color-coded alerts: on track, coming up, overdue', es: 'Alertas por color: al día, próxima a vencer, vencida' },
+    f2_li2: { en: 'Filter by status so nothing slips through', es: 'Filtra por estado para que nada se te escape' },
+    f2_li3: { en: 'One glance tells you what needs attention this week', es: 'De un vistazo sabes qué necesita atención esta semana' },
+
+    f3_h2: { en: 'Take your progress anywhere it needs to go.', es: 'Lleva tu progreso a donde lo necesites.' },
+    f3_p: { en: "Generate a professional PDF report or an Excel breakdown in one click — to share with a partner, a financial coach, or just to keep an offline record of how far you've come.", es: 'Genera un reporte profesional en PDF o un desglose en Excel con un solo clic, para compartirlo con tu pareja, un asesor financiero, o simplemente para llevar un registro de cuánto has avanzado.' },
+    f3_li1: { en: 'One-click PDF summary of your full debt picture', es: 'Resumen en PDF de toda tu situación de deudas, con un clic' },
+    f3_li2: { en: 'Excel export with a clean, ready-to-share layout', es: 'Exportación a Excel con un formato limpio y listo para compartir' },
+    f3_li3: { en: 'Save or reopen your data anytime, on any computer', es: 'Guarda o vuelve a abrir tus datos cuando quieras, desde cualquier equipo' },
+
+    loss_eyebrow: { en: 'WHAT WAITING IS COSTING YOU', es: 'LO QUE TE CUESTA ESPERAR' },
+    loss_h2: { en: 'Every month without a plan, interest wins.', es: 'Cada mes sin un plan, el interés gana.' },
+    loss_p: { en: "A credit card at 24% APR doesn't pause while you figure things out. Paying the wrong debt first — or paying the minimum on all of them equally — quietly sends extra money to interest instead of your balance.", es: 'Una tarjeta de crédito con 24% de interés anual no se detiene mientras lo piensas. Pagar la deuda equivocada primero, o pagar el mínimo en todas por igual, envía en silencio dinero extra al interés en vez de reducir tu saldo.' },
+    loss_amount: { en: "That's money you'll never get back.", es: 'Es dinero que nunca vas a recuperar.' },
+    loss_caption: { en: 'The Avalanche method exists for exactly this reason: pay the highest interest rate first, and stop overpaying the bank for the privilege of being disorganized.', es: 'El método Avalancha existe justo por esto: paga primero la tasa de interés más alta y deja de pagarle de más al banco por el simple hecho de estar desorganizado.' },
+
+    own_eyebrow: { en: "WHY IT'S DIFFERENT", es: 'POR QUÉ ES DIFERENTE' },
+    own_h2: { en: 'Not another app renting you a login.', es: 'No es otra app que te renta un inicio de sesión.' },
+    own1_h3: { en: 'Your data stays yours', es: 'Tus datos siguen siendo tuyos' },
+    own1_p: { en: 'No bank connection, no account, no third-party server holding your numbers. Everything lives in your own file, on your own computer.', es: 'Sin conexión bancaria, sin cuenta, sin un servidor externo guardando tus números. Todo vive en tu propio archivo, en tu propia computadora.' },
+    own2_h3: { en: 'No subscription, ever', es: 'Sin suscripción, jamás' },
+    own2_p: { en: "Pay once. Use it every month for as long as you're paying off debt — and after, as a record of how you did it.", es: 'Paga una sola vez. Úsalo cada mes mientras saldas tus deudas, y después, como registro de cómo lo lograste.' },
+    own3_h3: { en: 'Made to actually open', es: 'Hecho para que realmente lo abras' },
+    own3_p: { en: "Dark or light mode, your own accent color, your own background. A tool you'll want to check in on, not avoid.", es: 'Modo oscuro o claro, tu propio color de acento, tu propio fondo. Una herramienta que vas a querer abrir, no evitar.' },
+
+    price_eyebrow: { en: 'ONE PAYMENT. NO CATCH.', es: 'UN SOLO PAGO. SIN TRUCOS.' },
+    price_h2: { en: 'Get your full debt payoff plan today.', es: 'Consigue hoy tu plan completo para saldar deudas.' },
+    price_sub_p: { en: "Everything you saw above — the strategy planner, due date alerts, exports, and trend tracking — in one file that's entirely yours.", es: 'Todo lo que viste arriba: el planificador de estrategia, las alertas de vencimiento, las exportaciones y el seguimiento de progreso, en un solo archivo que es completamente tuyo.' },
+    price_onetime: { en: 'one time', es: 'pago único' },
+    price_sub2: { en: 'No subscription. No recurring charge. No expiration.', es: 'Sin suscripción. Sin cobros recurrentes. Sin fecha de caducidad.' },
+    price_li1: { en: 'Full DebtFree tool, unlocked completely', es: 'Herramienta DebtFree completa, totalmente desbloqueada' },
+    price_li2: { en: 'Snowball and Avalanche payoff planning', es: 'Planificación de pago con Bola de nieve y Avalancha' },
+    price_li3: { en: 'Due date alerts and notification center', es: 'Alertas de vencimiento y centro de notificaciones' },
+    price_li4: { en: 'PDF and Excel export, unlimited', es: 'Exportación ilimitada a PDF y Excel' },
+    price_li5: { en: 'Works forever — no login, no cloud, no expiry', es: 'Funciona para siempre: sin inicio de sesión, sin nube, sin caducidad' },
+    price_cta: { en: 'Get DebtFree Now — $47', es: 'Obtén DebtFree Ahora — $47' },
+
+    faq_h2: { en: 'Questions before you get started', es: 'Preguntas antes de empezar' },
+    faq1_q: { en: 'Is this a subscription?', es: '¿Esto es una suscripción?' },
+    faq1_a: { en: 'No. You pay $47 once and the tool is yours permanently — no recurring billing of any kind.', es: 'No. Pagas $47 una sola vez y la herramienta es tuya para siempre, sin ningún cobro recurrente.' },
+    faq2_q: { en: 'Do I need to connect my bank account?', es: '¿Necesito conectar mi cuenta bancaria?' },
+    faq2_a: { en: 'Never. You enter your own balances and rates manually, and everything stays in your own file on your own device.', es: 'Nunca. Ingresas tus propios saldos y tasas manualmente, y todo permanece en tu propio archivo, en tu propio dispositivo.' },
+    faq3_q: { en: 'Which debts can I track?', es: '¿Qué deudas puedo registrar?' },
+    faq3_a: { en: 'Any of them — credit cards, personal loans, auto financing, store cards, or anything else with a balance and an interest rate.', es: 'Cualquiera: tarjetas de crédito, préstamos personales, financiamiento de auto, tarjetas de tienda o cualquier otra deuda con saldo y tasa de interés.' },
+    faq4_q: { en: 'What if I use more than one computer?', es: '¿Qué pasa si uso más de una computadora?' },
+    faq4_a: { en: "You can export your data and reopen it anywhere, so switching computers or browsers doesn't mean starting over.", es: 'Puedes exportar tus datos y volver a abrirlos donde sea, así que cambiar de computadora o navegador no significa empezar de nuevo.' },
+
+    footer_text: { en: 'DebtFree — a one-time tool for people who want a real plan, not another subscription.', es: 'DebtFree — una herramienta de pago único para quienes quieren un plan real, no otra suscripción.' }
+  };
+
+  function applyLanguage(lang){
+    document.documentElement.setAttribute('lang', lang);
+    document.title = TITLE[lang];
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var key = el.getAttribute('data-i18n');
+      if (STRINGS[key]) el.textContent = STRINGS[key][lang];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(function(el){
+      var key = el.getAttribute('data-i18n-html');
+      if (STRINGS[key]) el.innerHTML = STRINGS[key][lang];
+    });
   }
 
-  var viewportH = window.innerHeight;
-  window.addEventListener('resize', function(){ viewportH = window.innerHeight; }, { passive: true });
+  var overlay = document.getElementById('langOverlay');
+  var btnEn = document.getElementById('langEn');
+  var btnEs = document.getElementById('langEs');
 
-  var observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      var el = entry.target;
-      // Decide the direction purely from where the element sits in the
-      // viewport right now (no dependency on scroll-event timing, which
-      // is not guaranteed to run before/after the observer callback).
-      // Entering from the bottom half -> slide up into place.
-      // Entering from the top half -> slide down into place.
-      var enteringFromTop = entry.boundingClientRect.top < viewportH / 2;
-      el.classList.toggle('reveal-up', enteringFromTop);
+  function closeOverlay(){
+    overlay.style.display = 'none';
+    document.documentElement.style.overflow = '';
+  }
 
-      if (entry.isIntersecting) {
-        requestAnimationFrame(function(){
-          el.classList.add('visible');
-        });
-      } else {
-        el.classList.remove('visible');
-      }
-    });
-  }, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -8% 0px'
+  // Bloquear el scroll de la página mientras el popup está visible.
+  document.documentElement.style.overflow = 'hidden';
+
+  btnEn.addEventListener('click', function(){
+    applyLanguage('en');
+    closeOverlay();
   });
+  btnEs.addEventListener('click', function(){
+    applyLanguage('es');
+    closeOverlay();
+  });
+})();
+</script>
 
-  els.forEach(function(el){ observer.observe(el); });
+<script>
+(function(){
+  // Animación de aparición al hacer scroll deshabilitada:
+  // todos los elementos quedan visibles desde el inicio.
+  var els = document.querySelectorAll('.reveal, .reveal-mask');
+  els.forEach(function(el){ el.classList.add('visible'); });
 })();
 </script>
 
